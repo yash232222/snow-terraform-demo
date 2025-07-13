@@ -1,0 +1,23 @@
+-- Create a dedicated user for Terraform
+CREATE OR REPLACE USER tr_user
+PASSWORD = "example-test-123" -- IMPORTANT: In a real environment, use a strong, secure password and never hardcode it!
+DEFAULT_WAREHOUSE = COMPUTE_WH;
+
+-- Create a custom role for infrastructure management
+CREATE OR REPLACE ROLE external_iac;
+
+-- Create a database if it doesn't exist (Terraform will manage this explicitly later)
+CREATE OR REPLACE DATABASE iac_db;
+
+-- Grant necessary privileges to the external_iac role
+GRANT USAGE ON WAREHOUSE COMPUTE_WH TO external_iac;
+GRANT USAGE ON DATABASE iac_db TO external_iac;
+GRANT USAGE ON SCHEMA public TO external_iac; -- We'll put our demo table here
+GRANT CREATE TABLE ON SCHEMA PUBLIC TO external_iac;
+
+-- Grant the external_iac role to our Terraform user
+USE ROLE ACCOUNTADMIN; -- This step often requires ACCOUNTADMIN privileges
+GRANT ROLE EXTERNAL_IAC TO USER tr_user;
+
+-- Double-check your current account identifier (useful for Terraform config)
+SELECT CURRENT_ACCOUNT();
