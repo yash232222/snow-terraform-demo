@@ -1,0 +1,6 @@
+snow_account = "YOUR ACCOUNT ID"
+snow_org = "YOUR ORG ID"
+snow_user = "TR_USER"
+snow_password = "example-test-123"
+snow_db = "IAC_DB"
+snow_role = "EXTERNAL_IAC"
